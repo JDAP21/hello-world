@@ -24,21 +24,28 @@
 
 
 
+
+
 const express = require('express');
 const { exec } = require('child_process');
+const path = require('path');
 
 const app = express();
 app.use(express.json());
 
-// 👉 New: GET request to show "Hello World" on home page
+// 👉 GET request: show Hello World
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 
-// 👉 This is still your webhook receiver
+// 👉 POST request: GitHub Webhook receiver
 app.post('/git-webhook', (req, res) => {
     console.log('Webhook received!');
-    exec('cd /path/where/you/want/hello-world && git pull', (error, stdout, stderr) => {
+
+    // 🔥 Correct local path to your project folder
+    const localRepoPath = 'C:/Users/bittu/OneDrive/Desktop/NODE JS/PRACTICE/Git Pratic/GitHub Repo';
+
+    exec(`cd "${localRepoPath}" && git pull`, (error, stdout, stderr) => {
         if (error) {
             console.error(`Git Pull Error: ${error.message}`);
             return res.status(500).send('Git pull failed');
@@ -48,7 +55,7 @@ app.post('/git-webhook', (req, res) => {
     });
 });
 
-// Server listen
+// Start server
 app.listen(3000, () => {
     console.log('Webhook server running on port 3000');
 });

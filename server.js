@@ -12,16 +12,16 @@ const path = require('path');
 const app = express();
 app.use(express.json());
 
-// 👉 GET request: show Hello World
+// GET request: show Hello World
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 
-// 👉 POST request: GitHub Webhook receiver
+// POST request: GitHub Webhook receiver
 app.post('/git-webhook', (req, res) => {
     console.log('Webhook received!');
 
-    // 🔥 Correct local path to your project folder
+    // Correct local path to your project folder
     const localRepoPath = 'C:/Users/bittu/OneDrive/Desktop/NODE JS/PRACTICE/Git Pratic/GitHub Repo';
 
     exec(`cd "${localRepoPath}" && git pull`, (error, stdout, stderr) => {
